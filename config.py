@@ -17,10 +17,10 @@ PDFS_DIR: Path = DATA_DIR / "pdfs"
 QDRANT_STORAGE_PATH: str = str(BASE_DIR / "qdrant_storage")
 
 # ─── Model Identifiers ─────────────────────────────────────────────────────────
-# CLIP ViT-B/32: contrastively trained for image-text alignment.
-# Images and text project into the *same* 512-dim cosine space — queries across
-# modalities are genuine nearest-neighbour lookups without any bridging.
-EMBED_MODEL_NAME: str = "openai/clip-vit-base-patch32"
+# Qwen3-VL-2B-Instruct: multimodal VLM with unified text+image token space.
+# Text and image inputs share the same 1536-dim hidden state space, enabling
+# cross-modal cosine similarity without separate projection heads.
+EMBED_MODEL_NAME: str = "Qwen/Qwen3-VL-2B-Instruct"
 REASONING_MODEL_NAME: str = "google/gemma-3-4b-it"   # Gemma 3 4B — requires HF token + accepted terms
 WHISPER_MODEL_NAME: str = "openai/whisper-base"       # Whisper-base for audio encoder + ASR
 
@@ -33,9 +33,10 @@ VECTOR_VOICE_QUERY: str = "voice_query"
 VECTOR_NUTRITION_PDF: str = "nutrition_pdf"
 VECTOR_AUDIO_WAVEFORM: str = "audio_waveform"
 
-# CLIP ViT-B/32 projects both images and text to 512 dims.
-# Whisper-base encoder also outputs 512 dims — all four named vectors are uniform.
-VECTOR_DIM: int = 512
+# Qwen3-VL-2B-Instruct hidden_size = 1536. This is the dimension of mean-pooled
+# last hidden states used as cross-modal embeddings.
+# Whisper-base encoder outputs 512 dims — audio_waveform vector stays at 512.
+VECTOR_DIM: int = 1536
 WHISPER_EMBED_DIM: int = 512
 
 # ─── Qdrant / Retrieval Defaults ──────────────────────────────────────────────
